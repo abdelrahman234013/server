@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Limited Activation Email</title>
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        min-width: 100%;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        background-color: #fafafa;
+        color: #222222;
+      }
+      a {
+        color: #000;
+        text-decoration: none;
+      }
+      h1 {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.25;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+      p {
+        margin-top: 0;
+        margin-bottom: 24px;
+      }
+      table td {
+        vertical-align: top;
+      }
+
+      .email-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .email-header {
+        background-color: #0078f3;
+        padding: 24px;
+        color: #ffffffff;
+      }
+
+      .email-body {
+        padding: 24px;
+        background-color: #ffffffff;
+      }
+      .email-footer {
+        padding: 24px;
+        background-color: #ffffffff;
+      }
+      .button {
+        display: inline-block;
+        background-color: #0078f3;
+        color: #ffffffff;
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 4px;
+        padding: 12px 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-wrapper">
+      <div class="email-header">
+        <h1>Welcome to Limited Store</h1>
+      </div>
+      <div class="email-body">
+        <a href="http://localhost:3000?emailToken=<%= emailToken %>"
+          >please click here to verify your email</a
+        >
+
+        <h2>this link will be expire within 5 minutes</h2>
+      </div>
+    </div>
+  </body>
+</html>

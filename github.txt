@@ -1,0 +1,6 @@
+git branch => view all branches i created
+git branch <branch name> => create branch
+git switch <branch name> => switch branch  
+git checkout <branch name> => switch branch also
+git switch -c <branch name> => create and switch branch
+git branch -d <branch name> => delete branch
