@@ -3,6 +3,7 @@ import { Product } from "../models/product.model.js";
 import {
   sendEmailToAdminsAndOwners,
   sendEmailToUser,
+  sendStatusToUser,
 } from "./email.service.js";
 
 export const updateOrderShippedStatus = async (status, order, res) => {
@@ -19,9 +20,12 @@ export const updateOrderShippedStatus = async (status, order, res) => {
 
     // SEND EMAIL TO USER
     const { userInfo: user, orderNumber } = order;
-    const userData = { user, orderNumber };
+    const { firstName } = user;
+    const userData = { user, orderNumber, orderStatus:"Shipped", firstName};
+    // await sendEmailToUser("Order Shipped", userData);
+    await sendStatusToUser("Order Shipped", userData, "user-orderStatus.mail.ejs");
 
-    await sendEmailToUser("Order Shipped", userData);
+
   } catch (error) {
     console.error(
       "Order Service Error (updateOrderShippedStatus):",
@@ -47,6 +51,13 @@ export const updateOrderDeliveredStatus = async (status, order, res) => {
     }
 
     await order.save();
+
+   // SEND EMAIL TO USER
+   const { userInfo: user, orderNumber } = order;
+   const { firstName } = user;
+   const userData = { user, orderNumber, orderStatus:"Delivered", firstName};
+   // await sendEmailToUser("Order Delivered", userData);
+  await sendStatusToUser("Order Delivered", userData, "user-orderStatus.mail.ejs");
 
     res.status(200).json({ message: "Order status updated successfully" });
   } catch (error) {
@@ -80,14 +91,14 @@ export const updateOrderCancelledStatus = async (status, order, res) => {
   order.orderStatus = status;
   await order.save();
 
+  
+
   res.status(200).json({ message: "Order status updated successfully" });
 
-  // SEND EMAIL TO ADMINS & OWNERS
-  const { userInfo: user, orderNumber } = order;
-  const Admindata = { user, orderNumber };
-  await sendEmailToAdminsAndOwners("Order Canceled", Admindata);
-
-  // SEND EMAIL TO USER
-  const userData = { user, orderNumber };
-  await sendEmailToUser("Order Canceled", userData);
+   // SEND EMAIL TO USER
+   const { userInfo: user, orderNumber } = order;
+   const { firstName } = user;
+   const userData = { user, orderNumber, orderStatus:"Cancelled", firstName};
+   // await sendEmailToUser("Order Delivered", userData);
+  await sendStatusToUser("Order Cancelled", userData, "user-orderStatus.mail.ejs");
 };

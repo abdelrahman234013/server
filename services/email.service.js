@@ -37,3 +37,18 @@ export const sendEmailToUser = async (subject, data) => {
     console.error("Email Service Error (sendEmailToUser):", error.message);
   }
 };
+
+export const sendStatusToUser = async (subject, data, html) => {
+  const userEmail = data.user.email;
+
+  try {
+    await sendMail({
+      emails: [userEmail],
+      subject,
+      template: html,
+      data,
+    });
+  } catch (error) {
+    console.error("Email Service Error (sendEmailToUser):", error.message);
+  }
+};

@@ -4,6 +4,7 @@ import { Product } from "../models/product.model.js";
 import {
   sendEmailToAdminsAndOwners,
   sendEmailToUser,
+  sendStatusToUser,
 } from "../services/email.service.js";
 import {
   updateOrderDeliveredStatus,
@@ -23,13 +24,25 @@ export const createOrder = async (req, res) => {
 
     res.status(201).json({ message: "Order created successfully" });
 
+
+    // get products names to send it in the email
+    const productMap = new Map(products.map(product => [product.id, product.name]));
+
+    const orderWithNames = order.orderItems.map(orderItem => ({
+      ...orderItem,
+      name: productMap.get(orderItem.id)
+    }));
+    
+    console.log(orderWithNames)
+   
+     
     // SEND EMAIL TO ADMINS & OWNERS
-    const Admindata = { user, orderNumber: order.orderNumber };
+    const Admindata = { user, orderNumber: order.orderNumber, orderItems: orderWithNames, orderTotal: order.totalPrice};
 
     await sendEmailToAdminsAndOwners("Order Created", Admindata);
 
     // SEND EMAIL TO USER
-    const userData = { user, order};
+    const userData = { user, orderNumber: order.orderNumber, orderItems: orderWithNames, orderTotal: order.totalPrice};
 
     await sendEmailToUser("Order Confirmed", userData);
 
@@ -61,8 +74,12 @@ export const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
+    // SEND EMAIL TO ADMINS & OWNERS
+    // const userData = { userEmail: order.userInfo.email, userName:order.userInfo.firstName, orderNumber: order.orderNumber, orderStatus: order.orderStatus};
+
     if (status === "Shipped") {
       await updateOrderShippedStatus(status, order, res);
+      // await sendStatusToUser("Order Shipped", userData);
     }
 
     // DELIVERED STATUS
