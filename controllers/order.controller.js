@@ -29,7 +29,7 @@ export const createOrder = async (req, res) => {
     await sendEmailToAdminsAndOwners("Order Created", Admindata);
 
     // SEND EMAIL TO USER
-    const userData = { user, orderNumber: order.orderNumber };
+    const userData = { user, order};
 
     await sendEmailToUser("Order Confirmed", userData);
 
